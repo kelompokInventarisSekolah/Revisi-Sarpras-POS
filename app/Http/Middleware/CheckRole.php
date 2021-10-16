@@ -1,0 +1,36 @@
+<?php
+
+namespace App\Http\Middleware;
+
+use Closure;
+use Illuminate\Http\Request;
+
+class CheckRole
+{
+    /**
+     * Handle an incoming request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @return mixed
+     */
+    public function handle($request, Closure $next)
+    {
+      //jika akun yang login sesuai dengan role 
+      //maka silahkan akses
+      //jika tidak sesuai akan diarahkan ke home
+    
+      $roles = array_slice(func_get_args(), 2);
+    
+      foreach ($roles as $role_id) { 
+          $user = \Auth::user()->role_id;
+          if( $user == $role_id){
+              return $next($request);
+          }
+      }
+    
+      return redirect('/');
+    }
+    
+    
+}
